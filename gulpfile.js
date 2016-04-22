@@ -5,33 +5,51 @@ var gulp = require('gulp'),
 	rename = require('gulp-rename'),
 	cleanCSS = require('gulp-clean-css'),
 	watch = require('watch'),
-	stylus = require('gulp-stylus');
+	htmlMin = require('gulp-htmlmin'),
+	imageMin = require('gulp-imagemin'),
+	imageResize = require('gulp-gm');
+	
 
 gulp.task('default', function(){
-	console.log('Hello World');
+	console.log('Running default task!');
 });
 
 gulp.task('scripts', function(){
-	gulp.src(['js/app.js'])
+	gulp.src(['views/js/main.js'])
 		.pipe(uglify())
-        .pipe(rename('app.min.js'))
-		.pipe(gulp.dest('js/'));
+        .pipe(rename('main.min.js'))
+		.pipe(gulp.dest('views/js/'));
 });
 
 gulp.task('styles', function(){
-	gulp.src('css/**/*.css')
+	gulp.src(['views/css/style.css'])
 		.pipe(cleanCSS())
-		.pipe(gulp.dest('minCSS'));
-	gulp.src('styl/**/*.styl')
-		.pipe(stylus())
-		.pipe(gulp.dest('css/'))
+		.pipe(rename('style.min.css'))
+		.pipe(gulp.dest('views/css/'));
 });
+
+gulp.task('images', function() {
+	gulp.src('views/images/pizzeria.jpg')
+		.pipe(imageMin({
+			progressive: true
+		}))
+		.pipe(imageResize(function (gmfile) {
+ 
+      		return gmfile.resize(100, 100);
+ 
+    	}))
+		.pipe(gulp.dest('views/dist/images'));
+	gulp.src('img/*')
+		.pipe(imageMin({
+			progressive: true
+		}))
+		.pipe(gulp.dest('dist/img'));
+})
 
 gulp.task('watch', function(){
 	gulp.watch('js/**/*.js', ['scripts']);
 	gulp.watch('css/**/*.css', ['styles']);
-	gulp.watch('styl/**/*.styl', ['styles']);
 })
 
 
-gulp.task('default', ['scripts', 'styles', 'watch']);
+gulp.task('default', ['scripts', 'styles', 'images', 'watch']);
