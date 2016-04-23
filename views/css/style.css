@@ -31,7 +31,9 @@ form {
 
 .mover {
   position: fixed;
-  width: 256px;
+  /*width: 256px;*/
+  height: 100px;
+  width: 73px;
   z-index: -1;
   backface-visibility: hidden;
 }
