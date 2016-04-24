@@ -504,7 +504,7 @@ function updatePositions() {
 
   var items = document.getElementsByClassName('mover');
 
-  var allPizzas = [items];
+  var allPizzas = items;
 
   for (var i = 0; i < allPizzas.length; i++) {
     var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
