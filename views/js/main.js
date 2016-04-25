@@ -503,11 +503,18 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
+  var calcScrollTop = (document.body.scrollTop / 1250);
+
   for (var i = 0; i < items.length; i++) {
-    var moduloResponse = items.length % 5;
-    var phase = Math.sin((document.body.scrollTop / 1250) + moduloResponse;
+    var phase = Math.sin(calcScrollTop + (i % 5));
+
+    // console.log("scrollTop: ", document.body.scrollTop);
+
+    // var phase = Math.sin(i % 5);
+
+    // console.log("phase: ", phase);
     // items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-    items[i].style.transform = 'translateX(' + items[i].basicLeft + 100 * phase + 'px' + ')';
+    items[i].style.transform = 'translateX(' + (items[i].basicLeft + 100) * phase + 'px' + ')';
     // console.log(items[i].basicLeft);
   }
 
@@ -531,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var elemClassName = 'mover';
   var elemSrc = 'images/pizza.png';
 
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 40; i++) {
     var elem = document.createElement('img');
     elem.className = elemClassName;
     elem.src = elemSrc;
