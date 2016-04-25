@@ -8,6 +8,7 @@ var gulp = require('gulp'),
 	htmlMin = require('gulp-htmlmin'),
 	imageMin = require('gulp-imagemin'),
 	imageResize = require('gulp-gm');
+	critical = require('critical');
 	
 
 gulp.task('default', function(){
@@ -26,6 +27,10 @@ gulp.task('styles', function(){
 		.pipe(cleanCSS())
 		.pipe(rename('style.min.css'))
 		.pipe(gulp.dest('views/css/'));
+	gulp.src(['css/style.css', 'css/print.css'])
+		.pipe(cleanCSS())
+		.pipe(rename('all.min.css'))
+		.pipe(gulp.dest('css/'));
 });
 
 gulp.task('images', function() {
@@ -44,12 +49,21 @@ gulp.task('images', function() {
 			progressive: true
 		}))
 		.pipe(gulp.dest('dist/img'));
-})
+});
 
 gulp.task('watch', function(){
 	gulp.watch('views/js/**/*.js', ['scripts']);
 	gulp.watch('views/css/**/*.css', ['styles']);
-})
+});
 
+gulp.task('critical', function (cb) {
+    critical.generate({
+        inline: true,
+        src: 'index.html',
+        dest: 'dist/index-critical.html',
+        minify: true
+    });
+});
 
 gulp.task('default', ['scripts', 'styles', 'images', 'watch']);
+
