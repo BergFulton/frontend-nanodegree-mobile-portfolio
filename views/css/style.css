@@ -1,11 +1,11 @@
 /** {
   outline: 1px solid red !important;
 }*/
-* {
+/** {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -box-sizing: border-box;
-}
+}*/
 
 body {
   font-family: "Trebuchet MS", Helvetica, sans-serif;
@@ -35,8 +35,7 @@ form {
   height: 100px;
   width: 73px;
   z-index: -1;
-/*  backface-visibility: hidden;
-*/}
+}
 
 .randomPizzaContainer {
   float: left;

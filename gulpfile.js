@@ -10,7 +10,6 @@ var gulp = require('gulp'),
 	imageResize = require('gulp-gm');
 	critical = require('critical');
 	
-
 gulp.task('default', function(){
 	console.log('Running default task!');
 });
@@ -27,10 +26,10 @@ gulp.task('styles', function(){
 		.pipe(cleanCSS())
 		.pipe(rename('style.min.css'))
 		.pipe(gulp.dest('views/css/'));
-	gulp.src(['css/style.css', 'css/print.css'])
-		.pipe(cleanCSS())
-		.pipe(rename('all.min.css'))
-		.pipe(gulp.dest('css/'));
+	// gulp.src(['css/style.css', 'css/print.css'])
+	// 	.pipe(cleanCSS())
+	// 	.pipe(rename('all.min.css'))
+	// 	.pipe(gulp.dest('css/'));
 });
 
 gulp.task('images', function() {
@@ -65,5 +64,5 @@ gulp.task('critical', function (cb) {
     });
 });
 
-gulp.task('default', ['scripts', 'styles', 'images', 'watch']);
+gulp.task('default', ['scripts', 'styles', 'images', 'critical', 'watch']);
 
