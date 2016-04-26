@@ -448,12 +448,27 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.getElementsByClassName("randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.getElementsByClassName("randomPizzaContainer")[i], size);
-      var newwidth = (document.getElementsByClassName("randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.getElementsByClassName("randomPizzaContainer")[i].style.width = newwidth;
+    var newWidth;
+    switch(size) {
+      case "1":
+        newWidth = 25;
+        break;
+      case "2":
+        newWidth = 33.3;
+        break;
+      case "3":
+        newWidth = 50;
+        break;
+      default:
+        console.log("bug in sizeSwitcher");
     }
-  }
+
+    var randomPizzas = document.getElementsByClassName("randomPizzaContainer");
+    var pizzaLength = randomPizzas.length;
+    for (var i = 0; i < pizzaLength; i++) {
+      randomPizzas[i].style.width = newWidth +"%";
+    }
+  };
 
   changePizzaSizes(size);
 
@@ -504,8 +519,9 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var calcScrollTop = (document.body.scrollTop / 1250);
-
-  for (var i = 0; i < items.length; i++) {
+//Changed i < items.length to 20, because items.length is 40, 
+//and that seems excessive. 20 gives you ALL the pizzas.
+  for (var i = 0; i < 20; i++) {
     var phase = Math.sin(calcScrollTop + (i % 5));
 
     // console.log("scrollTop: ", document.body.scrollTop);
