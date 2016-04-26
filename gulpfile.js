@@ -59,7 +59,7 @@ gulp.task('critical', function (cb) {
     critical.generate({
         inline: true,
         src: 'index.html',
-        dest: 'dist/index-critical.html',
+        dest: 'index-critical.html',
         minify: true
     });
 });
