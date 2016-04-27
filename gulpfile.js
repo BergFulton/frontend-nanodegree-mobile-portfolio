@@ -1,4 +1,4 @@
-//Gulp File. Hopefully. 
+//Gulp File. Runs a bunch of gulp tasks. Hopefully. 
 
 var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
@@ -14,6 +14,7 @@ gulp.task('default', function(){
 	console.log('Running default task!');
 });
 
+// Make your code ugly and put it in a dist folder.
 gulp.task('scripts', function(){
 	gulp.src(['views/js/main.js'])
 		.pipe(uglify())
@@ -21,17 +22,15 @@ gulp.task('scripts', function(){
 		.pipe(gulp.dest('views/js/'));
 });
 
+// Cleans CSS
 gulp.task('styles', function(){
 	gulp.src(['views/css/style.css'])
 		.pipe(cleanCSS())
 		.pipe(rename('style.min.css'))
 		.pipe(gulp.dest('views/css/'));
-	// gulp.src(['css/style.css', 'css/print.css'])
-	// 	.pipe(cleanCSS())
-	// 	.pipe(rename('all.min.css'))
-	// 	.pipe(gulp.dest('css/'));
 });
 
+// Image resizing and optimizing. Vastly improves perf!
 gulp.task('images', function() {
 	gulp.src('views/images/pizzeria.jpg')
 		.pipe(imageMin({
@@ -42,6 +41,7 @@ gulp.task('images', function() {
       		return gmfile.resize(100, 100);
  
     	}))
+    	// Puts those images in a dist folder
 		.pipe(gulp.dest('views/dist/images'));
 	gulp.src('img/*')
 		.pipe(imageMin({
@@ -50,11 +50,14 @@ gulp.task('images', function() {
 		.pipe(gulp.dest('dist/img'));
 });
 
+// Watch task lets you know that stuff is changing-good for bug dx!
 gulp.task('watch', function(){
 	gulp.watch('views/js/**/*.js', ['scripts']);
 	gulp.watch('views/css/**/*.css', ['styles']);
 });
 
+// Critical mashes CSS & HTML together & generates index-critical.html
+// This is a powerful task, use w. caution, but can SERIOUSLY raise perf
 gulp.task('critical', function (cb) {
     critical.generate({
         inline: true,
