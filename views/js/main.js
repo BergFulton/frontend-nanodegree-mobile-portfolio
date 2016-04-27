@@ -657,7 +657,8 @@ function updatePositions() {
     var calcScrollTop = (document.body.scrollTop / 1250);
     
     //Changed i < items.length to 20, because items.length is 40, 
-    //and that seems excessive. 20 gives you ALL the pizzas.
+    //and that seems excessive. 20 gives you ALL the pizzas. Or at least
+    //enough pizzas to get the job done.
     
     for (var i = 0; i < 20; i++) {
         var phase = Math.sin(calcScrollTop + (i % 5));
@@ -683,16 +684,17 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
     var cols = 8;
     var s = 256;
+    var elemId = document.getElementById("movingPizzas1");
     var elemClassName = 'mover';
     var elemSrc = 'images/pizza.png';
-
-    for (var i = 0; i < 40; i++) {
+    //Reduced i < 200 to i < 20. Because really, who needs 200 pizzas. 
+    for (var i = 0; i < 20; i++) {
         var elem = document.createElement('img');
         elem.className = elemClassName;
         elem.src = elemSrc;
         elem.basicLeft = (i % cols) * s;
         elem.style.top = (Math.floor(i / cols) * s) + 'px';
-        document.getElementById("movingPizzas1").appendChild(elem);
+        elemId.appendChild(elem);
     }
     updatePositions();
 });
