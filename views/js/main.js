@@ -611,9 +611,12 @@ var resizePizzas = function(size) {
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
+// Moved this outside of the loop below--accessing DOM in loop is expensive.
+var pizzasDiv = document.getElementById("randomPizzas");
+
 // This for-loop actually creates and appends all of the pizzas when the page loads
+
 for (var i = 2; i < 100; i++) {
-    var pizzasDiv = document.getElementById("randomPizzas");
     pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -654,13 +657,8 @@ function updatePositions() {
     frame++;
     window.performance.mark("mark_start_frame");
 
-    var calcScrollTop = (document.body.scrollTop / 1250);
-    
-    //Changed i < items.length to 20, because items.length is 40, 
-    //and that seems excessive. 20 gives you ALL the pizzas. Or at least
-    //enough pizzas to get the job done.
-    
-    for (var i = 0; i < 20; i++) {
+    var calcScrollTop = (document.body.scrollTop / 1250)
+    for (var i = 0; i < items.length; i++) {
         var phase = Math.sin(calcScrollTop + (i % 5));
         items[i].style.transform = 'translateX(' + (items[i].basicLeft + 100) * 
             phase + 'px' + ')';
@@ -682,19 +680,33 @@ window.addEventListener('scroll', updatePositions);
 
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-    var cols = 8;
-    var s = 256;
-    var elemId = document.getElementById("movingPizzas1");
-    var elemClassName = 'mover';
-    var elemSrc = 'images/pizza.png';
-    //Reduced i < 200 to i < 20. Because really, who needs 200 pizzas. 
-    for (var i = 0; i < 20; i++) {
+    
+    var elemId = document.getElementById("movingPizzas1"),
+        elemClassName = 'mover',
+        elemSrc = 'images/pizza.png',
+        cols = 8,
+        s = 256,
+        rows = 6,
+        totalPizzas = 48,
+        fragment = document.createDocumentFragment(); // node container to minimize dom reflow - 
+          //See: http://ejohn.org/blog/dom-documentfragments/
+
+    // recalculate cols and rows based on device browser window
+    // All of this because of Andrew Roy Chen's awesomeness
+    // See: https://github.com/uncleoptimus/udacityP4/blob/gh-pages/views/js/main.js#L547
+    cols = Math.ceil(window.innerWidth / (256 - 73.33)); // factoring in img width for better effect
+    rows = Math.ceil(window.innerHeight / 256);
+    totalPizzas = cols * rows;
+
+    //Reduced i < 200 to i < totalPizzas. Because really, who needs 200 pizzas. 
+    for (var i = 0; i < totalPizzas; i++) {
         var elem = document.createElement('img');
         elem.className = elemClassName;
         elem.src = elemSrc;
         elem.basicLeft = (i % cols) * s;
         elem.style.top = (Math.floor(i / cols) * s) + 'px';
-        elemId.appendChild(elem);
+        fragment.appendChild(elem); // See http://ejohn.org/blog/dom-documentfragments/
     }
+    elemId.appendChild(fragment);
     updatePositions();
 });
